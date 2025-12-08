@@ -12,10 +12,11 @@
       @show-product="showProductPage"
       @go-home="goToMainApp"
       @show-student-dashboard="openStudentDashboard"
+      @show-call-history="openCallHistory"
     />
 
     <!-- Main App Content -->
-    <main v-if="currentPage === 'main' && !managementMode && !showCoachDashboard && !showStudentDashboard" class="ml-16 flex-1 flex items-start justify-center p-8 relative z-[5]" :style="(showDialer || showCoachInfoPanel) ? 'margin-right: 33.333333%' : ''">
+    <main v-if="currentPage === 'main' && !managementMode && !showCoachDashboard && !showStudentDashboard && !showCallHistory" class="ml-16 flex-1 flex items-start justify-center p-8 relative z-[5]" :style="(showDialer || showCoachInfoPanel) ? 'margin-right: 33.333333%' : ''">
       <div class="flex gap-6 w-full max-w-[1400px] h-[80vh] mt-2.5">
         <!-- Chat Container -->
         <div class="w-full max-w-6xl mx-auto rounded-xl px-5">
@@ -831,6 +832,13 @@
       </div>
     </div>
 
+    <!-- Call History Page -->
+    <div v-if="showCallHistory" class="ml-16 flex flex-col min-h-screen">
+      <div class="flex-1">
+        <CallHistory />
+      </div>
+    </div>
+
     <!-- Product Page -->
     <div v-if="currentPage === 'product'" class="ml-16">
       <ProductPage
@@ -856,7 +864,7 @@
     </div>
 
     <!-- Coach Management Interface -->
-    <CoachManagement v-if="managementMode === 'admin' && currentPage === 'main' && !showCoachDashboard && !showStudentDashboard" />
+    <CoachManagement v-if="managementMode === 'admin' && currentPage === 'main' && !showCoachDashboard && !showStudentDashboard && !showCallHistory" />
 
     <!-- Coach Creation Page for create-coach URL -->
     <CoachCreationPage
@@ -866,7 +874,7 @@
     />
 
     <!-- Footer -->
-    <Footer v-if="currentPage === 'main' && !managementMode && !showStudentDashboard" :style="(showDialer || showCoachInfoPanel) ? 'margin-right: 33.333333%' : ''" :showDialer="showDialer" :queuePaused="queuePaused" @skip-to-dialer="skipToDialer" @multi-line="startMultiLineDialing" />
+    <Footer v-if="currentPage === 'main' && !managementMode && !showStudentDashboard && !showCallHistory" :style="(showDialer || showCoachInfoPanel) ? 'margin-right: 33.333333%' : ''" :showDialer="showDialer" :queuePaused="queuePaused" @skip-to-dialer="skipToDialer" @multi-line="startMultiLineDialing" />
 
     <!-- Screen Reader Live Region for Announcements -->
     <div
@@ -966,6 +974,7 @@ import CoachCreationPage from './components/CoachCreationPage.vue'
 import CoachCarousel from './components/CoachCarousel.vue'
 import CoachDashboard from './components/CoachDashboard.vue'
 import StudentDashboard from './components/StudentDashboard.vue'
+import CallHistory from './components/CallHistory.vue'
 import MicSpeakerCheck from './components/modals/MicSpeakerCheck.vue'
 
 // PrimeVue Components (adding Button)
@@ -1004,6 +1013,13 @@ const connectCrm = () => {
     showCreateAccountCTA.value = true
     scrollToBottom()
   }
+}
+
+const openCallHistory = () => {
+  showCallHistory.value = true
+  showCoachDashboard.value = false
+  showStudentDashboard.value = false
+  currentPage.value = 'main'
 }
 
 const returnToCoachesSelection = (): void => {
@@ -1132,6 +1148,7 @@ const currentPage = ref<string>('main') // 'main', 'product', 'login', 'signup'
 const showCoachDashboard = ref(false)
 const dashboardCoachName = ref<string | null>(null)
 const showStudentDashboard = ref(false)
+const showCallHistory = ref(false)
 const studentCoachName = ref<string | null>(null)
 const chatInputRef = ref<any>(null)
 const chatMessages = ref<HTMLElement | null>(null)
@@ -1855,6 +1872,9 @@ const handleSwitchToVulcan = () => {
 
 const showProductPage = () => {
   currentPage.value = 'product'
+  showCoachDashboard.value = false
+  showStudentDashboard.value = false
+  showCallHistory.value = false
 
   // Clear any existing focus when navigating to product page
   nextTick(() => {
@@ -1879,6 +1899,8 @@ const goToMainApp = () => {
   // Set page and clear any special modes/panels
   currentPage.value = 'main'
   showCoachDashboard.value = false
+  showStudentDashboard.value = false
+  showCallHistory.value = false
   dashboardCoachName.value = null
   setManagementMode(null)
   showDialer.value = false
@@ -1964,6 +1986,7 @@ const handleGoogleSignin = (): void => {
 
 const handleLoginSuccess = (userData: any): void => {
   currentPage.value = 'main'
+  showCallHistory.value = false
   isSignedIn.value = true
   isReturningUser.value = true // This is a returning user
   phoneVerified.value = true // Returning users don't need to verify phone again
@@ -3054,6 +3077,7 @@ const handleHold = (onHold: boolean): void => {
 const openStudentDashboard = (): void => {
   showCoachDashboard.value = false
   showStudentDashboard.value = true
+  showCallHistory.value = false
   studentCoachName.value = currentCoach.value?.name || null
   currentPage.value = 'main'
 }
