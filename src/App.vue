@@ -1015,6 +1015,13 @@ const connectCrm = () => {
   }
 }
 
+const openCallHistory = () => {
+  showCallHistory.value = true
+  showCoachDashboard.value = false
+  showStudentDashboard.value = false
+  currentPage.value = 'main'
+}
+
 const returnToCoachesSelection = (): void => {
   isPracticeMode.value = false
   showDialer.value = false
@@ -1865,6 +1872,9 @@ const handleSwitchToVulcan = () => {
 
 const showProductPage = () => {
   currentPage.value = 'product'
+  showCoachDashboard.value = false
+  showStudentDashboard.value = false
+  showCallHistory.value = false
 
   // Clear any existing focus when navigating to product page
   nextTick(() => {
@@ -1889,6 +1899,8 @@ const goToMainApp = () => {
   // Set page and clear any special modes/panels
   currentPage.value = 'main'
   showCoachDashboard.value = false
+  showStudentDashboard.value = false
+  showCallHistory.value = false
   dashboardCoachName.value = null
   setManagementMode(null)
   showDialer.value = false
@@ -1974,6 +1986,7 @@ const handleGoogleSignin = (): void => {
 
 const handleLoginSuccess = (userData: any): void => {
   currentPage.value = 'main'
+  showCallHistory.value = false
   isSignedIn.value = true
   isReturningUser.value = true // This is a returning user
   phoneVerified.value = true // Returning users don't need to verify phone again
@@ -3064,6 +3077,7 @@ const handleHold = (onHold: boolean): void => {
 const openStudentDashboard = (): void => {
   showCoachDashboard.value = false
   showStudentDashboard.value = true
+  showCallHistory.value = false
   studentCoachName.value = currentCoach.value?.name || null
   currentPage.value = 'main'
 }
