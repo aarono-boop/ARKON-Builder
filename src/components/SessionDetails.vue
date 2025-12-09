@@ -96,26 +96,28 @@
                 </TabList>
                 <TabPanels>
                     <TabPanel value="details">
-                        <div class="grid grid-cols-2 gap-4">
-                            <div>
-                                <span class="text-gray-400 block text-sm">Contact Name</span>
-                                <span class="font-medium">{{ call.contactName }}</span>
-                            </div>
-                            <div>
-                                <span class="text-gray-400 block text-sm">Phone Number</span>
-                                <span class="font-medium">{{ call.phoneNumber }}</span>
-                            </div>
-                            <div>
-                                <span class="text-gray-400 block text-sm">Date & Time</span>
-                                <span class="font-medium">{{ formatDateTime(call.dateTime) }}</span>
-                            </div>
-                            <div>
-                                <span class="text-gray-400 block text-sm">Duration</span>
-                                <span class="font-medium">{{ call.duration }}</span>
-                            </div>
-                            <div>
-                                <span class="text-gray-400 block text-sm">Outcome</span>
-                                <span class="font-medium">{{ call.status }}</span>
+                        <div class="bg-gray-900/50 p-4 rounded-lg">
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <span class="text-gray-400 block text-sm">Contact Name</span>
+                                    <span class="font-medium">{{ call.contactName }}</span>
+                                </div>
+                                <div>
+                                    <span class="text-gray-400 block text-sm">Phone Number</span>
+                                    <span class="font-medium">{{ call.phoneNumber }}</span>
+                                </div>
+                                <div>
+                                    <span class="text-gray-400 block text-sm">Date & Time</span>
+                                    <span class="font-medium">{{ formatDateTime(call.dateTime) }}</span>
+                                </div>
+                                <div>
+                                    <span class="text-gray-400 block text-sm">Duration</span>
+                                    <span class="font-medium">{{ call.duration }}</span>
+                                </div>
+                                <div>
+                                    <span class="text-gray-400 block text-sm">Outcome</span>
+                                    <span class="font-medium">{{ call.status }}</span>
+                                </div>
                             </div>
                         </div>
                     </TabPanel>
