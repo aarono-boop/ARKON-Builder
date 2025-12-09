@@ -297,7 +297,7 @@ const calls = computed(() => {
 }
 :deep(.p-accordion-content) {
     background: transparent !important;
-    border: 3px none rgb(255, 255, 255) !important;
+    border: none !important;
     padding: 0 1rem 1rem 1rem !important;
     border-width: 0 !important;
 }
