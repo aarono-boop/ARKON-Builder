@@ -151,7 +151,7 @@
                         </div>
                     </TabPanel>
                     <TabPanel value="coach">
-                        <div class="bg-blue-900/20 border border-blue-800 p-4 rounded-lg">
+                        <div class="bg-gray-900/50 p-4 rounded-lg">
                             <div class="flex items-start gap-3">
                                 <i class="pi pi-star-fill text-yellow-500 mt-1"></i>
                                 <div>
