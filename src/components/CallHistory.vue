@@ -195,4 +195,9 @@ const getStatusSeverity = (status: string) => {
 :deep(.p-card-content) {
   padding: 1.25rem;
 }
+:deep(.p-datatable-row-expansion > td) {
+    padding: 0 !important;
+    border: none !important;
+    background: transparent !important;
+}
 </style>
