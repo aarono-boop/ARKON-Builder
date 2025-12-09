@@ -223,6 +223,7 @@ const formatDateTime = (date: Date) => {
 const getCallStatusSeverity = (status: string) => {
   switch (status) {
     case 'Completed': return 'success'
+    case 'Live Answer': return 'success'
     case 'No Answer': return 'warn'
     case 'Voicemail': return 'info'
     default: return 'secondary'
@@ -243,7 +244,7 @@ const calls = computed(() => {
             phoneType: 'Mobile',
             dateTime: new Date(sessionDate.getTime() + 1000 * 60 * 5),
             duration: '5m 23s',
-            status: 'Completed',
+            status: 'Live Answer',
             recordingUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
             transcript: "Agent: Hello, this is [Name] from [Company].\nSam: Hi, what is this about?\nAgent: I'm calling to follow up on your interest in our new product.\nSam: Oh, right. I did download the brochure.\nAgent: Great! Did you have any specific questions?\nSam: Actually, yes. How does the pricing work for small teams?\nAgent: We have a special tier for teams under 10 users. It starts at $29/user.\nSam: That sounds reasonable. Can you send me more info?\nAgent: Absolutely. I'll email you the details right now.\nSam: Thanks!",
             userNotes: 'Interested in the small team plan. Sent pricing info.',
