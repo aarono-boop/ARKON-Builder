@@ -299,6 +299,11 @@ const calls = computed(() => {
     background: transparent !important;
     border: none !important;
     padding: 0 1rem 1rem 1rem !important;
+    border-width: 0 !important;
+}
+:deep(.p-accordion-content-content) {
+    border: none !important;
+    border-width: 0 !important;
 }
 :deep(.p-tabs) {
     background: transparent !important;
