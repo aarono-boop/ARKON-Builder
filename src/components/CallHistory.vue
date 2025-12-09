@@ -84,12 +84,12 @@
           </Column>
           <Column header="Details" headerClass="py-4 px-4" bodyClass="py-4 px-4" style="width: 100px">
             <template #body="{ data }">
-              <Button 
-                :icon="isRowExpanded(data) ? 'pi pi-eye-slash' : 'pi pi-eye'" 
-                text 
-                rounded 
-                :aria-label="isRowExpanded(data) ? 'Hide Session' : 'View Session'" 
-                @click="toggleRow(data)" 
+              <Button
+                :icon="isRowExpanded(data) ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
+                text
+                rounded
+                :aria-label="isRowExpanded(data) ? 'Collapse Session' : 'Expand Session'"
+                @click="toggleRow(data)"
               />
             </template>
           </Column>
