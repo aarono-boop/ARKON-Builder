@@ -300,12 +300,38 @@ const calls = computed(() => {
     border: none !important;
     padding: 0 1rem 1rem 1rem !important;
 }
+:deep(.p-tabs) {
+    background: transparent !important;
+    border: none !important;
+}
+:deep(.p-tablist) {
+    background: transparent !important;
+    border: none !important;
+}
 :deep(.p-tablist-tab-list) {
     background: transparent !important;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-top: none !important;
+    border-left: none !important;
+    border-right: none !important;
+}
+:deep(.p-tab) {
+    background: transparent !important;
+    border: none !important;
+    border-bottom: 2px solid transparent !important;
+    margin-bottom: -1px !important;
+}
+:deep(.p-tab-active) {
+    background: transparent !important;
+    border-color: var(--p-primary-color) !important;
 }
 :deep(.p-tabpanels) {
     background: transparent !important;
+    border: none !important;
     padding: 1.5rem 0 0 0 !important;
+}
+:deep(.p-tabpanel) {
+    background: transparent !important;
+    border: none !important;
 }
 </style>
