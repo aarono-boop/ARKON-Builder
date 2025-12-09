@@ -149,7 +149,7 @@ const ranges = [
   { label: 'Past Month', value: 'month' }
 ]
 const selectedRange = ref('week')
-const expandedRows = ref({})
+const expandedRows = ref<Record<string, boolean>>({})
 
 const toggleRow = (data: any) => {
   const newExpandedRows = { ...expandedRows.value }
