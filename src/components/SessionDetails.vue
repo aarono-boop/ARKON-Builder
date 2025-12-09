@@ -277,13 +277,28 @@ const calls = computed(() => {
 </script>
 
 <style scoped>
+:deep(.p-accordionpanel) {
+    border: none !important;
+    box-shadow: none !important;
+}
+:deep(.p-accordionheader) {
+    border: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    padding: 1rem !important;
+}
+:deep(.p-accordionheader:hover) {
+    background: rgba(255, 255, 255, 0.05) !important;
+}
 :deep(.p-accordion-header-link) {
     background: transparent !important;
     border: none !important;
+    padding: 0 !important;
 }
 :deep(.p-accordion-content) {
-    background: rgba(31, 41, 55, 0.4) !important;
-    border-top: 1px solid rgba(75, 85, 99, 0.4) !important;
+    background: transparent !important;
+    border: none !important;
+    padding: 0 1rem 1rem 1rem !important;
 }
 :deep(.p-tablist-tab-list) {
     background: transparent !important;
