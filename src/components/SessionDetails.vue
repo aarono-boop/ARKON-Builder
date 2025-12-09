@@ -62,6 +62,9 @@
       <Accordion v-model:value="activeCallIds" multiple>
         <AccordionPanel v-for="call in calls" :key="call.id" :value="call.id">
           <AccordionHeader>
+            <template #toggleicon>
+                <i :class="['pi', activeCallIds.includes(call.id) ? 'pi-chevron-down' : 'pi-chevron-right']"></i>
+            </template>
             <div class="flex items-center justify-between w-full pr-4">
               <div class="flex items-center gap-4">
                 <div class="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center">
