@@ -332,6 +332,10 @@ const calls = computed(() => {
     border: none !important;
     border-bottom: 2px solid transparent !important;
     margin-bottom: -1px !important;
+    margin-right: 16px !important;
+}
+:deep(.p-tab:last-child) {
+    margin-right: 0 !important;
 }
 :deep(.p-tab-active) {
     background: transparent !important;
