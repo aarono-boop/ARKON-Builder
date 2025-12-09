@@ -280,6 +280,10 @@ const calls = computed(() => {
 :deep(.p-accordionpanel) {
     border: none !important;
     box-shadow: none !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12) !important;
+}
+:deep(.p-accordionpanel:last-child) {
+    border-bottom: none !important;
 }
 :deep(.p-accordionheader) {
     border: none !important;
