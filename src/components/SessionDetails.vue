@@ -73,6 +73,7 @@
                 <div class="flex items-center gap-3">
                   <div class="font-bold">{{ call.contactName }}</div>
                   <div class="text-sm text-gray-400">{{ call.phoneNumber }}</div>
+                  <div class="text-xs text-gray-500 bg-gray-800 px-2 py-0.5 rounded">{{ call.phoneType }}</div>
                 </div>
               </div>
               <div class="flex items-center gap-6">
@@ -239,6 +240,7 @@ const calls = computed(() => {
             id: '1',
             contactName: 'Sam Sample',
             phoneNumber: '(312) 586-9748',
+            phoneType: 'Mobile',
             dateTime: new Date(sessionDate.getTime() + 1000 * 60 * 5),
             duration: '5m 23s',
             status: 'Completed',
@@ -252,6 +254,7 @@ const calls = computed(() => {
             id: '2',
             contactName: 'George Sample',
             phoneNumber: '(202) 744-9556',
+            phoneType: 'Work',
             dateTime: new Date(sessionDate.getTime() + 1000 * 60 * 15),
             duration: '1m 12s',
             status: 'Voicemail',
@@ -265,6 +268,7 @@ const calls = computed(() => {
             id: '3',
             contactName: 'Jennifer Martinez',
             phoneNumber: '(555) 456-7890',
+            phoneType: 'Home',
             dateTime: new Date(sessionDate.getTime() + 1000 * 60 * 25),
             duration: '0m 45s',
             status: 'No Answer',
