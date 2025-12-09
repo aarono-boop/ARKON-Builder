@@ -70,15 +70,15 @@
                 <div class="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center">
                   <i class="pi pi-user text-white"></i>
                 </div>
-                <div>
+                <div class="flex items-center gap-3">
                   <div class="font-bold">{{ call.contactName }}</div>
                   <div class="text-sm text-gray-400">{{ call.phoneNumber }}</div>
                 </div>
               </div>
               <div class="flex items-center gap-6">
-                <div class="text-right">
+                <div class="flex items-center gap-3">
                   <div class="text-sm font-medium">{{ call.duration }}</div>
-                  <div class="text-xs text-gray-400">{{ formatTime(call.dateTime) }}</div>
+                  <div class="text-sm text-gray-400">{{ formatTime(call.dateTime) }}</div>
                 </div>
                 <Badge :value="call.status" :severity="getCallStatusSeverity(call.status)" />
               </div>
