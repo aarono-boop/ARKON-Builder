@@ -1,7 +1,7 @@
 <template>
   <div class="space-y-6">
-    <!-- Header -->
-    <div class="flex items-center gap-4">
+    <!-- Header (Only shown if not embedded) -->
+    <div v-if="!embedded" class="flex items-center gap-4">
       <Button icon="pi pi-arrow-left" label="Back" text @click="$emit('back')" />
       <div>
         <h2 class="text-xl font-bold">Session Details</h2>
@@ -9,8 +9,10 @@
       </div>
     </div>
 
-    <!-- Session Stats Summary -->
-    <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+    <!-- Session Stats Summary (Only shown if not embedded, or maybe we want it? User said "details open up... below the main row". The main row already has stats. So maybe we don't need stats again?) -->
+    <!-- The user prompt says: "show the following... Each Call - Details - Recording Playback...". It doesn't explicitly say to hide the stats, but they are redundant if right below the row. -->
+    <!-- However, the row only shows summary numbers. The cards show the same numbers. I'll hide them if embedded to save space and avoid redundancy. -->
+    <div v-if="!embedded" class="grid grid-cols-2 md:grid-cols-5 gap-4">
       <Card class="bg-gray-800/40 border border-gray-700">
         <template #content>
           <div class="text-center">
@@ -55,7 +57,7 @@
 
     <!-- Calls List -->
     <div class="space-y-4">
-      <h3 class="text-lg font-semibold">Calls in this Session</h3>
+      <h3 v-if="!embedded" class="text-lg font-semibold">Calls in this Session</h3>
       
       <Accordion v-model:value="activeCallIds" multiple>
         <AccordionPanel v-for="call in calls" :key="call.id" :value="call.id">
@@ -178,9 +180,12 @@ import Tab from 'primevue/tab'
 import TabPanels from 'primevue/tabpanels'
 import TabPanel from 'primevue/tabpanel'
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   session: any
-}>()
+  embedded?: boolean
+}>(), {
+  embedded: false
+})
 
 defineEmits(['back'])
 
