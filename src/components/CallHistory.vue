@@ -1,6 +1,7 @@
 <template>
   <div class="min-h-screen bg-gray-900 text-white p-6" role="region" aria-label="Call History">
     <div class="max-w-7xl mx-auto space-y-6">
+      
       <!-- Header -->
       <div class="flex items-center justify-between bg-gray-800/60 border border-gray-700 rounded-xl px-4 py-3">
         <div class="flex items-center gap-3">
@@ -35,7 +36,7 @@
       </div>
 
       <!-- Stats Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
         <Card v-for="stat in currentStats" :key="stat.label" class="bg-gray-800/40 border border-gray-700">
           <template #content>
             <div class="flex flex-col gap-2">
@@ -57,7 +58,15 @@
         <div class="p-4 border-b border-gray-700">
           <h2 class="text-lg font-semibold">Recent Dial Sessions</h2>
         </div>
-        <DataTable :value="recentSessions" scrollable scrollHeight="500px" :tableStyle="{ tableLayout: 'fixed' }" size="large">
+        <DataTable 
+          v-model:expandedRows="expandedRows"
+          :value="recentSessions" 
+          dataKey="id"
+          scrollable 
+          scrollHeight="500px" 
+          :tableStyle="{ tableLayout: 'fixed' }" 
+          size="large"
+        >
           <Column field="date" header="Date" headerClass="py-4 px-4" bodyClass="py-4 px-4">
             <template #body="{ data }">
               {{ formatDate(data.date) }}
@@ -73,8 +82,25 @@
               <Badge :value="data.status" :severity="getStatusSeverity(data.status)" />
             </template>
           </Column>
+          <Column header="Details" headerClass="py-4 px-4" bodyClass="py-4 px-4" style="width: 100px">
+            <template #body="{ data }">
+              <Button
+                :icon="isRowExpanded(data) ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
+                text
+                rounded
+                :aria-label="isRowExpanded(data) ? 'Collapse Session' : 'Expand Session'"
+                @click="toggleRow(data)"
+              />
+            </template>
+          </Column>
+          <template #expansion="{ data }">
+            <div class="p-4 bg-gray-900/30 border-t border-gray-700">
+              <SessionDetails :session="data" :embedded="true" />
+            </div>
+          </template>
         </DataTable>
       </div>
+
     </div>
   </div>
 </template>
@@ -86,12 +112,31 @@ import Card from 'primevue/card'
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 import Badge from 'primevue/badge'
+import Button from 'primevue/button'
+import SessionDetails from './SessionDetails.vue'
 
 const ranges = [
   { label: 'Past Week', value: 'week' },
   { label: 'Past Month', value: 'month' }
 ]
 const selectedRange = ref('week')
+const expandedRows = ref({})
+
+const toggleRow = (data: any) => {
+  const newExpandedRows = { ...expandedRows.value }
+  if (newExpandedRows[data.id]) {
+    delete newExpandedRows[data.id]
+  } else {
+    // Optional: Close other rows if you only want one open at a time
+    // newExpandedRows = {} 
+    newExpandedRows[data.id] = true
+  }
+  expandedRows.value = newExpandedRows
+}
+
+const isRowExpanded = (data: any) => {
+  return !!expandedRows.value[data.id]
+}
 
 // Mock Data
 const statsData = {
@@ -118,13 +163,13 @@ const currentStats = computed(() => {
 })
 
 const recentSessions = ref([
-  { date: new Date(Date.now() - 1000 * 60 * 60 * 2), duration: '45m', contacts: 50, calls: 48, liveAnswers: 5, voicemails: 30, status: 'Completed' },
-  { date: new Date(Date.now() - 1000 * 60 * 60 * 26), duration: '1h 15m', contacts: 80, calls: 75, liveAnswers: 8, voicemails: 45, status: 'Completed' },
-  { date: new Date(Date.now() - 1000 * 60 * 60 * 50), duration: '30m', contacts: 25, calls: 22, liveAnswers: 2, voicemails: 15, status: 'Completed' },
-  { date: new Date(Date.now() - 1000 * 60 * 60 * 74), duration: '55m', contacts: 60, calls: 58, liveAnswers: 7, voicemails: 35, status: 'Completed' },
-  { date: new Date(Date.now() - 1000 * 60 * 60 * 98), duration: '1h 05m', contacts: 70, calls: 68, liveAnswers: 9, voicemails: 40, status: 'Completed' },
-  { date: new Date(Date.now() - 1000 * 60 * 60 * 122), duration: '40m', contacts: 35, calls: 32, liveAnswers: 4, voicemails: 20, status: 'Completed' },
-  { date: new Date(Date.now() - 1000 * 60 * 60 * 146), duration: '1h 30m', contacts: 100, calls: 95, liveAnswers: 12, voicemails: 60, status: 'Completed' }
+  { id: '1', date: new Date(Date.now() - 1000 * 60 * 60 * 2), duration: '45m', contacts: 50, calls: 48, liveAnswers: 5, voicemails: 30, status: 'Completed' },
+  { id: '2', date: new Date(Date.now() - 1000 * 60 * 60 * 26), duration: '1h 15m', contacts: 80, calls: 75, liveAnswers: 8, voicemails: 45, status: 'Completed' },
+  { id: '3', date: new Date(Date.now() - 1000 * 60 * 60 * 50), duration: '30m', contacts: 25, calls: 22, liveAnswers: 2, voicemails: 15, status: 'Completed' },
+  { id: '4', date: new Date(Date.now() - 1000 * 60 * 60 * 74), duration: '55m', contacts: 60, calls: 58, liveAnswers: 7, voicemails: 35, status: 'Completed' },
+  { id: '5', date: new Date(Date.now() - 1000 * 60 * 60 * 98), duration: '1h 05m', contacts: 70, calls: 68, liveAnswers: 9, voicemails: 40, status: 'Completed' },
+  { id: '6', date: new Date(Date.now() - 1000 * 60 * 60 * 122), duration: '40m', contacts: 35, calls: 32, liveAnswers: 4, voicemails: 20, status: 'Completed' },
+  { id: '7', date: new Date(Date.now() - 1000 * 60 * 60 * 146), duration: '1h 30m', contacts: 100, calls: 95, liveAnswers: 12, voicemails: 60, status: 'Completed' }
 ])
 
 const formatDate = (date: Date) => {
@@ -149,5 +194,10 @@ const getStatusSeverity = (status: string) => {
 <style scoped>
 :deep(.p-card-content) {
   padding: 1.25rem;
+}
+:deep(.p-datatable-row-expansion > td) {
+    padding: 0 !important;
+    border: none !important;
+    background: transparent !important;
 }
 </style>
