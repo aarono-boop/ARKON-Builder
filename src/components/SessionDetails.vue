@@ -57,7 +57,7 @@
     <div class="space-y-4">
       <h3 class="text-lg font-semibold">Calls in this Session</h3>
       
-      <Accordion :value="['1']" multiple>
+      <Accordion v-model:value="activeCallIds" multiple>
         <AccordionPanel v-for="call in calls" :key="call.id" :value="call.id">
           <AccordionHeader>
             <div class="flex items-center justify-between w-full pr-4">
@@ -164,7 +164,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { ref, computed } from 'vue'
 import Button from 'primevue/button'
 import Card from 'primevue/card'
 import Accordion from 'primevue/accordion'
@@ -217,6 +217,8 @@ const getCallStatusSeverity = (status: string) => {
     default: return 'secondary'
   }
 }
+
+const activeCallIds = ref(['1'])
 
 // Mock Calls Data
 const calls = computed(() => {
