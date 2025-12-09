@@ -301,9 +301,12 @@ const calls = computed(() => {
     padding: 0 1rem 1rem 1rem !important;
     border-width: 0 !important;
 }
-:deep(.p-accordion-content-content) {
+:deep(.p-accordion-content-content),
+:deep(.p-accordioncontent-content),
+:deep(.p-accordion-content > div) {
     border: none !important;
     border-width: 0 !important;
+    border-style: none !important;
 }
 :deep(.p-tabs) {
     background: transparent !important;
