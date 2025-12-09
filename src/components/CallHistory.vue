@@ -115,6 +115,35 @@ import Badge from 'primevue/badge'
 import Button from 'primevue/button'
 import SessionDetails from './SessionDetails.vue'
 
+interface CallHistoryEntry {
+  phoneNumber: string;
+  type: string;
+  contactName: string;
+  duration: string;
+  date: Date;
+  status: string;
+}
+
+interface CallDetailField {
+  label: string;
+  key: keyof CallHistoryEntry;
+}
+
+const selectedCall = ref<CallHistoryEntry | null>(null);
+
+const callDetailFields: CallDetailField[] = [
+  { label: 'Phone Number', key: 'phoneNumber' },
+  { label: 'Call Type', key: 'type' },
+];
+
+const selectedDetails = computed(() => {
+  if (!selectedCall.value) return [];
+  return callDetailFields.map((field) => ({
+    label: field.label,
+    value: selectedCall.value![field.key],
+  }));
+});
+
 const ranges = [
   { label: 'Past Week', value: 'week' },
   { label: 'Past Month', value: 'month' }
