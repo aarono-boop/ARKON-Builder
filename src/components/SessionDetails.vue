@@ -344,7 +344,7 @@ const calls = computed(() => {
 :deep(.p-tabpanels) {
     background: transparent !important;
     border: none !important;
-    padding: 1.5rem 0 0 0 !important;
+    padding: 1.5rem 0 20px 0 !important;
 }
 :deep(.p-tabpanel) {
     background: transparent !important;
