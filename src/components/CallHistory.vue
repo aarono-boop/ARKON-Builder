@@ -1,80 +1,92 @@
 <template>
   <div class="min-h-screen bg-gray-900 text-white p-6" role="region" aria-label="Call History">
     <div class="max-w-7xl mx-auto space-y-6">
-      <!-- Header -->
-      <div class="flex items-center justify-between bg-gray-800/60 border border-gray-700 rounded-xl px-4 py-3">
-        <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center">
-            <i class="pi pi-history text-white text-xl"></i>
-          </div>
-          <div>
-            <h1 class="text-xl font-bold">Call History</h1>
-            <p class="text-gray-400 text-xs">View your performance and recent sessions</p>
-          </div>
-        </div>
-        <div class="flex items-center gap-2">
-          <Dropdown
-            v-model="selectedRange"
-            :options="ranges"
-            optionLabel="label"
-            optionValue="value"
-            class="w-40 mic-like-dropdown"
-            variant="filled"
-            appendTo="body"
-            :pt="{
-              root: { style: { background: 'var(--p-surface-800)', border: '1px solid rgba(255,255,255,0.12)', borderRadius: '6px', padding: '0.5rem' } },
-              panel: { class: 'mic-dropdown-panel', style: { background: 'var(--p-surface-800)', border: '1px solid rgba(255,255,255,0.12)' } },
-              overlay: { class: 'mic-dropdown-panel', style: { background: 'var(--p-surface-800)', border: '1px solid rgba(255,255,255,0.12)' } },
-              content: { class: 'mic-dropdown-content', style: { background: 'var(--p-surface-800)', padding: '0.25rem' } },
-              list: { class: 'mic-dropdown-list', style: { background: 'var(--p-surface-800)' } },
-              items: { class: 'mic-dropdown-list', style: { background: 'var(--p-surface-800)' } },
-              item: { class: 'mic-dropdown-item hover:bg-white/10', style: { padding: '0.5rem 0.75rem' } }
-            }"
-          />
-        </div>
-      </div>
-
-      <!-- Stats Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        <Card v-for="stat in currentStats" :key="stat.label" class="bg-gray-800/40 border border-gray-700">
-          <template #content>
-            <div class="flex flex-col gap-2">
-              <span class="text-gray-400 text-sm">{{ stat.label }}</span>
-              <div class="flex items-end justify-between">
-                <span class="text-3xl font-bold">{{ stat.value.toLocaleString() }}</span>
-                <span :class="['text-sm font-medium', stat.trend >= 0 ? 'text-green-400' : 'text-red-400']">
-                  <i :class="['pi', stat.trend >= 0 ? 'pi-arrow-up' : 'pi-arrow-down', 'text-xs']"></i>
-                  {{ Math.abs(stat.trend) }}%
-                </span>
-              </div>
+      
+      <template v-if="!selectedSession">
+        <!-- Header -->
+        <div class="flex items-center justify-between bg-gray-800/60 border border-gray-700 rounded-xl px-4 py-3">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center">
+              <i class="pi pi-history text-white text-xl"></i>
             </div>
-          </template>
-        </Card>
-      </div>
-
-      <!-- Recent Dial Sessions -->
-      <div class="bg-gray-800/40 border border-gray-700 rounded-xl p-0 overflow-hidden">
-        <div class="p-4 border-b border-gray-700">
-          <h2 class="text-lg font-semibold">Recent Dial Sessions</h2>
+            <div>
+              <h1 class="text-xl font-bold">Call History</h1>
+              <p class="text-gray-400 text-xs">View your performance and recent sessions</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <Dropdown
+              v-model="selectedRange"
+              :options="ranges"
+              optionLabel="label"
+              optionValue="value"
+              class="w-40 mic-like-dropdown"
+              variant="filled"
+              appendTo="body"
+              :pt="{
+                root: { style: { background: 'var(--p-surface-800)', border: '1px solid rgba(255,255,255,0.12)', borderRadius: '6px', padding: '0.5rem' } },
+                panel: { class: 'mic-dropdown-panel', style: { background: 'var(--p-surface-800)', border: '1px solid rgba(255,255,255,0.12)' } },
+                overlay: { class: 'mic-dropdown-panel', style: { background: 'var(--p-surface-800)', border: '1px solid rgba(255,255,255,0.12)' } },
+                content: { class: 'mic-dropdown-content', style: { background: 'var(--p-surface-800)', padding: '0.25rem' } },
+                list: { class: 'mic-dropdown-list', style: { background: 'var(--p-surface-800)' } },
+                items: { class: 'mic-dropdown-list', style: { background: 'var(--p-surface-800)' } },
+                item: { class: 'mic-dropdown-item hover:bg-white/10', style: { padding: '0.5rem 0.75rem' } }
+              }"
+            />
+          </div>
         </div>
-        <DataTable :value="recentSessions" scrollable scrollHeight="500px" :tableStyle="{ tableLayout: 'fixed' }" size="large">
-          <Column field="date" header="Date" headerClass="py-4 px-4" bodyClass="py-4 px-4">
-            <template #body="{ data }">
-              {{ formatDate(data.date) }}
+
+        <!-- Stats Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <Card v-for="stat in currentStats" :key="stat.label" class="bg-gray-800/40 border border-gray-700">
+            <template #content>
+              <div class="flex flex-col gap-2">
+                <span class="text-gray-400 text-sm">{{ stat.label }}</span>
+                <div class="flex items-end justify-between">
+                  <span class="text-3xl font-bold">{{ stat.value.toLocaleString() }}</span>
+                  <span :class="['text-sm font-medium', stat.trend >= 0 ? 'text-green-400' : 'text-red-400']">
+                    <i :class="['pi', stat.trend >= 0 ? 'pi-arrow-up' : 'pi-arrow-down', 'text-xs']"></i>
+                    {{ Math.abs(stat.trend) }}%
+                  </span>
+                </div>
+              </div>
             </template>
-          </Column>
-          <Column field="duration" header="Duration" headerClass="py-4 px-4" bodyClass="py-4 px-4" />
-          <Column field="contacts" header="Contacts" headerClass="py-4 px-4" bodyClass="py-4 px-4" />
-          <Column field="calls" header="Calls" headerClass="py-4 px-4" bodyClass="py-4 px-4" />
-          <Column field="liveAnswers" header="Live Answers" headerClass="py-4 px-4" bodyClass="py-4 px-4" />
-          <Column field="voicemails" header="Voicemails" headerClass="py-4 px-4" bodyClass="py-4 px-4" />
-          <Column field="status" header="Status" headerClass="py-4 px-4" bodyClass="py-4 px-4">
-            <template #body="{ data }">
-              <Badge :value="data.status" :severity="getStatusSeverity(data.status)" />
-            </template>
-          </Column>
-        </DataTable>
-      </div>
+          </Card>
+        </div>
+
+        <!-- Recent Dial Sessions -->
+        <div class="bg-gray-800/40 border border-gray-700 rounded-xl p-0 overflow-hidden">
+          <div class="p-4 border-b border-gray-700">
+            <h2 class="text-lg font-semibold">Recent Dial Sessions</h2>
+          </div>
+          <DataTable :value="recentSessions" scrollable scrollHeight="500px" :tableStyle="{ tableLayout: 'fixed' }" size="large">
+            <Column field="date" header="Date" headerClass="py-4 px-4" bodyClass="py-4 px-4">
+              <template #body="{ data }">
+                {{ formatDate(data.date) }}
+              </template>
+            </Column>
+            <Column field="duration" header="Duration" headerClass="py-4 px-4" bodyClass="py-4 px-4" />
+            <Column field="contacts" header="Contacts" headerClass="py-4 px-4" bodyClass="py-4 px-4" />
+            <Column field="calls" header="Calls" headerClass="py-4 px-4" bodyClass="py-4 px-4" />
+            <Column field="liveAnswers" header="Live Answers" headerClass="py-4 px-4" bodyClass="py-4 px-4" />
+            <Column field="voicemails" header="Voicemails" headerClass="py-4 px-4" bodyClass="py-4 px-4" />
+            <Column field="status" header="Status" headerClass="py-4 px-4" bodyClass="py-4 px-4">
+              <template #body="{ data }">
+                <Badge :value="data.status" :severity="getStatusSeverity(data.status)" />
+              </template>
+            </Column>
+            <Column header="Actions" headerClass="py-4 px-4" bodyClass="py-4 px-4" style="width: 100px">
+              <template #body="{ data }">
+                <Button icon="pi pi-eye" text rounded aria-label="View Session" @click="viewSession(data)" />
+              </template>
+            </Column>
+          </DataTable>
+        </div>
+      </template>
+
+      <!-- Session Details View -->
+      <SessionDetails v-else :session="selectedSession" @back="selectedSession = null" />
+
     </div>
   </div>
 </template>
@@ -86,12 +98,19 @@ import Card from 'primevue/card'
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 import Badge from 'primevue/badge'
+import Button from 'primevue/button'
+import SessionDetails from './SessionDetails.vue'
 
 const ranges = [
   { label: 'Past Week', value: 'week' },
   { label: 'Past Month', value: 'month' }
 ]
 const selectedRange = ref('week')
+const selectedSession = ref(null)
+
+const viewSession = (session: any) => {
+  selectedSession.value = session
+}
 
 // Mock Data
 const statsData = {
