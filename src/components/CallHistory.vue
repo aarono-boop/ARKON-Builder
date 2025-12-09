@@ -36,7 +36,7 @@
       </div>
 
       <!-- Stats Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
         <Card v-for="stat in currentStats" :key="stat.label" class="bg-gray-800/40 border border-gray-700">
           <template #content>
             <div class="flex flex-col gap-2">
